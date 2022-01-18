@@ -32,7 +32,18 @@
         "serve": {
           "executor": "@nrwl/node:execute",
           "options": {
-            "buildTarget": "server:build"
+            "buildTarget": "server:build",
+            "port": 0
+          }
+        },
+        "serveMultiple": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": [
+              "PORT=4114 nx run server:serve",
+              "PORT=4214 nx run server:serve"
+            ],
+            "parallel": true
           }
         },
         "lint": {
@@ -50,11 +61,8 @@
             "passWithNoTests": true
           }
         }
-      }
+      },
+      "tags": []
     }
-  },
-  "cli": {
-    "defaultCollection": "@nrwl/express"
-  },
-  "defaultProject": "server"
+  }
 }
