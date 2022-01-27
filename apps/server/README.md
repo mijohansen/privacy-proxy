@@ -83,3 +83,13 @@ SHORT
 | short | user_id  | type  | created | event              |
 | ----- | -------- | ----- | ------- | ------------------ |
 | 1ad05 | 501ad05e | email | today   | Email Link Clicked |
+
+## The Collect endpoints
+
+This solution is tailormade for particular solutions
+
+```
+/amp/collect
+/ga4/collect
+
+```

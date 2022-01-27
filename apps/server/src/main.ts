@@ -4,15 +4,25 @@
  */
 
 import express from 'express';
+import { createIngressMap, IngressEntry } from './data/ingresses';
+import { createUserMap, UserEntry } from './data/users';
 import { connect, sendSampleMessage, subscribe } from './db/connection';
+import { attachRoutes } from "./routes";
 
 const bootstrap = async () => {
   const app = express();
 
-  subscribe((payload) => {
-    console.log(payload);
+  const userMap = createUserMap();
+  subscribe('users', (user: UserEntry) => {
+    userMap.set(user.user_id, user);
   });
 
+  const ingressMap = createIngressMap();
+  subscribe('ingresses', (ingressEntry: IngressEntry) => {
+    ingressMap.set(ingressEntry.ingress, ingressEntry.eventData);
+  });
+
+  attachRoutes(app);
   app.get('/api', (req, res) => {
     res.send({ message: 'Welcome to server!' });
   });

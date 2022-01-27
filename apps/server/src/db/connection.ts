@@ -6,10 +6,13 @@ import { databaseConfig } from '../config';
 const dbPool = new Pool(databaseConfig);
 const subscriber = createSubscriber(databaseConfig);
 
-const subscribe = (callbackFunction) => {
-  subscriber.notifications.on('my-channel', (payload) => {
+const subscribe = (
+  channel: string,
+  callbackFunction: (payload: any) => void
+) => {
+  subscriber.notifications.on(channel, (payload) => {
     // Payload as passed to subscriber.notify() (see below)
-    console.log("Received notification in 'my-channel':", payload);
+    console.log('Received notification in', channel, payload);
     callbackFunction(payload);
   });
 };

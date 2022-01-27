@@ -9,4 +9,7 @@ const databaseConfig: PoolConfig = {
   port: env.get('DB_PORT').required().asPortNumber(),
 };
 
-export { databaseConfig };
+const REDACTED = env.get('REDACTED_TEXT').default('REDACTED').asString();
+const UNKNOWN = env.get('UNKNOWN').default('UNKNOWN').asString();
+const SECRET_SALT = env.get('SECRET_SALT').required().asString();
+export { databaseConfig, REDACTED, UNKNOWN, SECRET_SALT };
