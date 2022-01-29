@@ -1,6 +1,99 @@
 {
   "version": 2,
   "projects": {
+    "demo-ga4": {
+      "root": "apps/demo-ga4",
+      "sourceRoot": "apps/demo-ga4/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/web:webpack",
+          "outputs": ["{options.outputPath}"],
+          "defaultConfiguration": "production",
+          "options": {
+            "compiler": "babel",
+            "outputPath": "dist/apps/demo-ga4",
+            "index": "apps/demo-ga4/src/index.html",
+            "baseHref": "/",
+            "main": "apps/demo-ga4/src/main.tsx",
+            "polyfills": "apps/demo-ga4/src/polyfills.ts",
+            "tsConfig": "apps/demo-ga4/tsconfig.app.json",
+            "assets": ["apps/demo-ga4/src/favicon.ico", "apps/demo-ga4/src/assets"],
+            "styles": ["apps/demo-ga4/src/styles.css"],
+            "scripts": [],
+            "webpackConfig": "@nrwl/react/plugins/webpack"
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/demo-ga4/src/environments/environment.ts",
+                  "with": "apps/demo-ga4/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/web:dev-server",
+          "options": {
+            "buildTarget": "demo-ga4:build",
+            "hmr": true
+          },
+          "configurations": {
+            "production": {
+              "buildTarget": "demo-ga4:build:production",
+              "hmr": false
+            }
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/demo-ga4/**/*.{ts,tsx,js,jsx}"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/demo-ga4"],
+          "options": {
+            "jestConfig": "apps/demo-ga4/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "privacy-pack": {
+      "root": "libs/privacy-pack",
+      "sourceRoot": "libs/privacy-pack/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/privacy-pack/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/privacy-pack"],
+          "options": {
+            "jestConfig": "libs/privacy-pack/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "server": {
       "root": "apps/server",
       "sourceRoot": "apps/server/src",
@@ -8,16 +101,12 @@
       "targets": {
         "build": {
           "executor": "@nrwl/node:build",
-          "outputs": [
-            "{options.outputPath}"
-          ],
+          "outputs": ["{options.outputPath}"],
           "options": {
             "outputPath": "dist/apps/server",
             "main": "apps/server/src/main.ts",
             "tsConfig": "apps/server/tsconfig.app.json",
-            "assets": [
-              "apps/server/src/assets"
-            ]
+            "assets": ["apps/server/src/assets"]
           },
           "configurations": {
             "production": {
@@ -43,29 +132,20 @@
         "serveMultiple": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": [
-              "PORT=4114 nx run server:serve",
-              "PORT=4214 nx run server:serve"
-            ],
+            "commands": ["PORT=4114 nx run server:serve", "PORT=4214 nx run server:serve"],
             "parallel": true
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": [
-            "{options.outputFile}"
-          ],
+          "outputs": ["{options.outputFile}"],
           "options": {
-            "lintFilePatterns": [
-              "apps/server/**/*.ts"
-            ]
+            "lintFilePatterns": ["apps/server/**/*.ts"]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": [
-            "coverage/apps/server"
-          ],
+          "outputs": ["coverage/apps/server"],
           "options": {
             "jestConfig": "apps/server/jest.config.js",
             "passWithNoTests": true

@@ -1,8 +1,13 @@
+import { AppContext } from './types';
+import { identityRoute } from './routes/identities';
 import { connectedIdentitiesRoute } from './routes/connected-identities';
-import { Express } from 'express';
+import { defaultRoutes } from './routes/default';
+import { providerGa4Routes } from './routes/providers/ga4';
 
-const attachRoutes = (app: Express) => {
-  connectedIdentitiesRoute(app);
+const attachRoutes = (context: AppContext) => {
+  [connectedIdentitiesRoute, identityRoute, defaultRoutes, providerGa4Routes].forEach((route) => {
+    route(context);
+  });
 };
 
 export { attachRoutes };

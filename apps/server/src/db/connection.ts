@@ -1,33 +1,33 @@
 import { Pool } from 'pg';
 import { Logger } from '../utils/logging';
 import createSubscriber from 'pg-listen';
-import { databaseConfig } from '../config';
+import { DB_CONFIG } from '../config';
 
-const dbPool = new Pool(databaseConfig);
-const subscriber = createSubscriber(databaseConfig);
-
-const subscribe = (
-  channel: string,
-  callbackFunction: (payload: any) => void
-) => {
-  subscriber.notifications.on(channel, (payload) => {
-    // Payload as passed to subscriber.notify() (see below)
-    console.log('Received notification in', channel, payload);
+const dbPool = new Pool(DB_CONFIG);
+const subscriber = createSubscriber(DB_CONFIG);
+const sampleChannel = 'my-channel';
+const subscribeToChannel = async (channelName: string, callbackFunction: (payload: any) => void) => {
+  await subscriber.listenTo(channelName);
+  subscriber.notifications.on(channelName, (payload) => {
+    console.log('Received notification in', channelName, payload);
     callbackFunction(payload);
   });
 };
 
 subscriber.events.on('error', (error) => {
-  Logger.error('Fatal database connection error:', error);
+  Logger.error('(pg) Fatal database connection error:', error);
   process.exit(1);
 });
-const connect = async () => {
+const connectToDatabase = async () => {
   await subscriber.connect();
-  await subscriber.listenTo('my-channel');
+  await subscriber.listenTo(sampleChannel);
 };
 
+const notifyChannel = async (channel: string, message: any) => {
+  return await subscriber.notify(channel, message);
+};
 const sendSampleMessage = async () => {
-  return await subscriber.notify('my-channel', {
+  return await subscriber.notify(sampleChannel, {
     greeting: 'Hey, buddy.',
     timestamp: Date.now(),
   });
@@ -35,18 +35,18 @@ const sendSampleMessage = async () => {
 
 dbPool.on('connect', () => {
   dbPool.on('error', (error) => {
-    Logger.error('(pg)' + error.name + ': ' + error.message);
+    Logger.error('(pg) ' + error.name + ': ' + error.message);
   });
 });
 
 process.on('exit', async (code) => {
-  Logger.error('(pg) gracefully shutdown after exit(' + code + ')');
+  Logger.info('(pg) gracefully shutdown after exit(' + code + ')');
   await subscriber.close();
   await dbPool.end();
 });
 process.on('SIGTERM', async () => {
-  Logger.error('(pg) gracefully shutdown after SIGTERM');
+  Logger.info('(pg) gracefully shutdown after SIGTERM');
   await dbPool.end();
 });
 
-export { dbPool, subscribe, connect, sendSampleMessage };
+export { dbPool, subscribeToChannel, connectToDatabase, sendSampleMessage, notifyChannel };

@@ -1,7 +1,8 @@
-import { Express } from "express";
+import { AppContext } from '../types';
+import { Logger } from '../utils/logging';
 
-const connectedIdentitiesRoute = (app:Express) => {
-
-}
+const connectedIdentitiesRoute = (context: AppContext) => {
+  Logger.info('I would connect identities');
+};
 
 export { connectedIdentitiesRoute };

@@ -1,12 +1,13 @@
-import { Express } from 'express';
-import { generateTrackingUuid, hashUserString } from '../utils/crypto';
+import { generateTrackingUuid, hashUserString } from '@privacy/privacy-pack';
+import { AppContext } from '../types';
+import { SECRET_SALT } from '../config';
 
-const identityRoute = (app: Express) => {
+export const identityRoute = (context: AppContext) => {
+  const { app } = context;
   app.get('/api/ident', (req, res) => {
     res.send({
-      message: hashUserString('michael.johansen@gmail.com'),
+      message: hashUserString('michael.johansen@gmail.com', SECRET_SALT),
       trackingId: generateTrackingUuid(),
     });
   });
 };
-export { identityRoute };
