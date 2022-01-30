@@ -153,6 +153,59 @@
         }
       },
       "tags": []
+    },
+    "soaker": {
+      "root": "apps/soaker",
+      "sourceRoot": "apps/soaker/src",
+      "projectType": "application",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "generatePackageJson": true,
+            "outputPath": "dist/apps/soaker",
+            "main": "apps/soaker/src/main.ts",
+            "tsConfig": "apps/soaker/tsconfig.app.json",
+            "assets": ["apps/soaker/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/soaker/src/environments/environment.ts",
+                  "with": "apps/soaker/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "executor": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "soaker:build"
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["apps/soaker/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/soaker"],
+          "options": {
+            "jestConfig": "apps/soaker/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
     }
   }
 }
