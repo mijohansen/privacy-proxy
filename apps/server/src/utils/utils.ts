@@ -9,3 +9,7 @@ export const createUrlWithParams = (url: string, params: object) => {
   });
   return url.toString();
 };
+
+export const allEqual = (arr: any[]) => {
+  return new Set(arr).size == 1;
+};

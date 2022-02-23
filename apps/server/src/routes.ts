@@ -1,6 +1,6 @@
 import { AppContext } from './types';
 import { identityRoute } from './routes/identities';
-import { connectedIdentitiesRoute } from './routes/connected-identities';
+import { connectedIdentitiesRoute } from './routes/api/connected-identities';
 import { defaultRoutes } from './routes/default';
 import { providerGa4Routes } from './routes/providers/ga4';
 

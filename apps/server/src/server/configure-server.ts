@@ -1,9 +1,9 @@
 import { Express } from 'express';
 import compression from 'compression';
-import promClient, { register } from 'prom-client';
+import { collectDefaultMetrics, register } from 'prom-client';
 
 export const configureServer = (app: Express) => {
-  promClient.collectDefaultMetrics({});
+  collectDefaultMetrics({});
   app.use(compression());
 
   app.get('/metrics', async (req, res) => {
