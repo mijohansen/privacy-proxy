@@ -1,6 +1,7 @@
 const nxPreset = require('@nrwl/jest/preset');
 const path = require('path');
 
+process.env.LOG_LEVEL = 'debug';
 /**
  * Ensure that environment variables are loaded when running tests.
  */

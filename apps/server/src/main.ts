@@ -16,11 +16,10 @@ const bootstrap = async () => {
   await connectToDatabase();
   await subscribeToUserEntries(userMap);
   await subscribeToIngresses(ingressMap);
-
   attachRoutes({ app, userMap, ingressMap });
 
   configureServer(app);
 
-  return app.listen(SERVER_PORT, () => onServerReady);
+  return app.listen(SERVER_PORT, onServerReady);
 };
 bootstrap().then(onServerClose);

@@ -11,7 +11,9 @@ export const providerGa4Routes = (context: AppContext) => {
 
   app.get('/gtag/js', async (req, res) => {
     const { id } = req.query;
-    const buffer = await scriptFetcher('https://www.googletagmanager.com/gtag/js', { id });
+    const l = 'dataLayer',
+      cx = 'c';
+    const buffer = await scriptFetcher('https://www.googletagmanager.com/gtag/js', { id, l, cx });
     res.set('content-type', 'application/javascript');
     res.set('content-encoding', 'gzip');
     res.write(buffer, 'binary');

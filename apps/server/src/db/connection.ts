@@ -15,7 +15,7 @@ const subscribeToChannel = async (channelName: string, callbackFunction: (payloa
 };
 
 subscriber.events.on('error', (error) => {
-  Logger.error('(pg) Fatal database connection error:', error);
+  Logger.error(error);
   process.exit(1);
 });
 const connectToDatabase = async () => {

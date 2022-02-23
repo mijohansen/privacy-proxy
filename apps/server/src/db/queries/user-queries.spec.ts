@@ -1,5 +1,5 @@
 import { createNewUserInDb, getUserByHashFromDb } from './users';
-import { UserEntry } from '../types';
+import { UserEntry } from '../../types';
 import { randomUUID } from 'crypto';
 
 it('should work', async () => {

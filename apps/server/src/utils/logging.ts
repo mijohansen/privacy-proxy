@@ -1,8 +1,10 @@
-import pino, {LoggerOptions} from 'pino';
+import pino, { LoggerOptions } from 'pino';
 import { isProduction } from './utils';
+import { LOG_LEVEL } from '../config';
 
-const pinoConfig:LoggerOptions= {
+const pinoConfig: LoggerOptions = {
   timestamp: false,
+  level: LOG_LEVEL,
   formatters: {
     level(label: string) {
       return { level: label };
@@ -13,8 +15,8 @@ const pinoConfig:LoggerOptions= {
 
 if (!isProduction()) {
   pinoConfig.transport = {
-    target: 'pino-pretty'
-  }
+    target: 'pino-pretty',
+  };
 }
 
 const Logger = pino(pinoConfig);

@@ -1,13 +1,13 @@
 import LRUCache from 'lru-cache';
-import { createNewUserInDb, getUserByHashFromDb } from '../db/users';
-import { generateTrackingUuid } from '@privacy/privacy-pack';
+import { createNewUserInDb, getUserByHashFromDb } from '../db';
+import { generateTrackingUuid, hashUserString } from '@privacy/privacy-pack';
 import { Logger } from '../utils/logging';
 import { notifyChannel, subscribeToChannel } from '../db/connection';
 import { UserEntry } from '../types';
-import { USER_CHANNEL_NAME } from '../config';
+import { SECRET_SALT, USER_CHANNEL_NAME, USER_MAX_CACHE } from '../config';
 
 const cacheOptions = {
-  max: 10000,
+  max: USER_MAX_CACHE,
 };
 
 const createUserMap = (): LRUCache<string, string> => {
@@ -22,7 +22,10 @@ const subscribeToUserEntries = async (userMap: LRUCache<string, string>) => {
     userMap.set(user.piiHash, user.trackingId);
   });
 };
-
+const getUserByPii = async (userCache: LRUCache<string, string>, pii: string) => {
+  const piiHash = hashUserString(pii, SECRET_SALT);
+  return getUserByHash(userCache, piiHash);
+};
 const getUserByHash = async (userCache: LRUCache<string, string>, piiHash: string) => {
   const userFromCache = userCache.get(piiHash);
   if (userFromCache) {
@@ -43,4 +46,4 @@ const getUserByHash = async (userCache: LRUCache<string, string>, piiHash: strin
   }
 };
 
-export { createUserMap, getUserByHash, subscribeToUserEntries };
+export { createUserMap, getUserByHash, subscribeToUserEntries, getUserByPii };

@@ -23,9 +23,11 @@ export const urlMapLookup = (urlRaw: URL, map: Map<string, string>) => {
   }
   return entry;
 };
+
 export const hashUserString = (pii: string, salt: string) => {
   return getUuidByString(JSON.stringify([pii, salt]), 5);
 };
+
 export const generateTrackingUuid = () => {
   return randomUUID();
 };
