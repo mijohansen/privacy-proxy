@@ -1,6 +1,29 @@
 {
   "version": 2,
   "projects": {
+    "browser-sdk": {
+      "root": "libs/browser-sdk",
+      "sourceRoot": "libs/browser-sdk/src",
+      "projectType": "library",
+      "targets": {
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["libs/browser-sdk/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/browser-sdk"],
+          "options": {
+            "jestConfig": "libs/browser-sdk/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
     "demo-ga4": {
       "root": "apps/demo-ga4",
       "sourceRoot": "apps/demo-ga4/src",
