@@ -24,7 +24,8 @@ export const GA4_ENDPOINT = env
   .get('GA4_ENDPOINT')
   .default('https://www.google-analytics.com/mp/collect')
   .asString();
-export const GA4_TRACKING_ID = env.get('GA4_TRACKING_ID').required().asString();
+export const GA4_API_SECRET = env.get('GA4_API_SECRET').asString();
+export const GA4_MEASUREMENT_ID = env.get('GA4_MEASUREMENT_ID').required().asString();
 export const AMP_ENDPOINT = env
   .get('AMP_ENDPOINT')
   .default('https://api.eu.amplitude.com/2/httpapi')

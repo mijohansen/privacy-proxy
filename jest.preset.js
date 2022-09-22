@@ -1,4 +1,4 @@
-const nxPreset = require('@nrwl/jest/preset');
+const nxPreset = require('@nrwl/jest/preset').default;
 const path = require('path');
 
 process.env.LOG_LEVEL = 'debug';

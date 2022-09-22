@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import NxWelcome from './nx-welcome';
-import { setUp, track } from '@privacy-one/analytics-sdk';
+import { setUp, track } from '@privacy-one/browser';
 import { useEffect } from 'react';
 
 export function App() {
@@ -9,10 +9,7 @@ export function App() {
   });
   const page = 'page';
   useEffect(() => {
-    track({
-      event: 'Page Viewed',
-      props: [],
-    }).then(() => console.log('tracked'));
+    track('Page Viewed', {}).then(() => console.log('tracked'));
   }, [page]);
   return (
     <>

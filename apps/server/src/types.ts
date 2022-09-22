@@ -16,3 +16,9 @@ export interface IngressEntry {
   ingress: string;
   eventData: any;
 }
+
+export interface BrowserUser {
+  ip: string;
+  deviceId: string;
+  ua: string;
+}

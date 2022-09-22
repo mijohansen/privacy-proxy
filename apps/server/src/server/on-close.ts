@@ -1,6 +1,5 @@
 import http from 'http';
 import { Logger } from '../utils/logging';
-import pino from 'pino';
 
 export const onServerClose = async (server: http.Server) => {
   server.on('error', (error: Error) => {
@@ -10,7 +9,6 @@ export const onServerClose = async (server: http.Server) => {
   Logger.info('Bootstrap completed');
   const closeServer = (eventName) => {
     Logger.info(eventName + ' signal received.');
-    pino.final(Logger);
     server.close();
   };
   process.on('SIGTERM', closeServer);

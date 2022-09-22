@@ -10,9 +10,17 @@ This project is heavily inspired and copied from amplitude-proxy by navikt. The 
 
 This project was generated using [Nx](https://nx.dev).
 
+## Server vs. client side 
+
+In general, we are trying to hold the browser-sdks to a bare minimum. The SDK is really just a wrapper
+around the contract to the server. This means that we don't need code for parsing cookies or dealing
+with other common lookups in the browser. For instance the mixpanel-sdk is checking user
+agents for bots and parsing user agents and all kind of operations that this implementation
+does on the server.
+
 ## Update routine
 
-Just some general housekeeping to keep up with NX.
+Just some general housekeeping to keep up with NX and other dependencies.
 
 ```
 nx migrate latest
@@ -72,7 +80,13 @@ this enricher to add event category or event label or other event properties.
 ## Client trackers
 
 ```
-@privacy-one/analytics-sdk
+@privacy-one/browser
 @privacy-one/react
 @privacy-one/vue
 ```
+
+
+## Cookies
+The server is setting a cookie to keep an generated client id. This
+cookie is not set from Javascript. In theory this should make cross-domain
+tracking very simple. Not 100% sure about how this actually will play out.

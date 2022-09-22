@@ -86,10 +86,15 @@ SHORT
 
 ## The Collect endpoints
 
-This solution is tailormade for particular solutions
+This solution is tailormade for receiving data from different contexts.
+Istead of trying to unify the api we are keeping keeping the endpoints
+separate. The browser collect endpoint for instance is using the
+information from the request to enrich events as targets 
 
+The default endpoints are as follows:
 ```
-/amp/collect
-/ga4/collect
+/collect
+```
 
-```
+
+

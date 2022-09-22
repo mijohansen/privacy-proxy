@@ -11,24 +11,36 @@ let trackingOptions: TrackingOptions = {
 export function setUp(options: TrackingOptions) {
   trackingOptions = Object.assign(trackingOptions, options);
 }
-export function track(eventData: BrowserEvent): Promise<Response> {
+export async function track(
+  event: string,
+  props?: object,
+  items?: any[]
+): Promise<Response | unknown> {
   try {
-    const { title, location } = window.document;
-    eventData.dt = title;
-    eventData.dl = location.toString();
-
+    const { title, location, referrer } = window.document;
     const { width, height } = window.screen;
-    eventData.sr = width + 'x' + height;
-
     const { innerWidth, innerHeight } = window;
-    eventData.va = innerWidth + 'x' + innerHeight;
+    const e: BrowserEvent = {
+      en: event,
+      props,
+      i: items,
+      dt: title,
+      dl: location.toString(),
+      dr: referrer,
+      uid: trackingOptions.userId,
+      sr: width + 'x' + height,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ul: navigator.language || navigator.userLanguage,
+      vp: innerWidth + 'x' + innerHeight,
+    };
 
     return fetch(trackingOptions.endpoint, {
       method: 'POST',
       headers: trackingOptions.headers,
       mode: 'cors',
       credentials: 'include',
-      body: JSON.stringify(eventData),
+      body: JSON.stringify(e),
     });
   } catch (e) {
     console.error(e);

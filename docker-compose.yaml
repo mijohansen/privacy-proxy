@@ -13,12 +13,3 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DATABASE}
     command: -p ${DB_PORT}
-  soaker:
-    build:
-      dockerfile: "Dockerfile.soaker"
-    ports:
-      - ${SOAKER_PORT}:${SOAKER_PORT}
-    expose:
-      - ${SOAKER_PORT}
-    environment:
-      SOAKER_PORT: ${SOAKER_PORT}

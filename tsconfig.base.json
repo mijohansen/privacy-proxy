@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@privacy-one/analytics-sdk": ["libs/browser-sdk/src/index.ts"],
+      "@privacy-one/browser": ["libs/browser/src/index.ts"],
       "@privacy/privacy-pack": ["libs/privacy-pack/src/index.ts"]
     }
   },

@@ -1,4 +1,0 @@
-FROM node:alpine
-COPY dist/apps/soaker /
-RUN npm i tslib
-CMD [ "node", "main.js" ]

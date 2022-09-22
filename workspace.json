@@ -1,24 +1,48 @@
 {
   "version": 2,
   "projects": {
-    "browser-sdk": {
-      "root": "libs/browser-sdk",
-      "sourceRoot": "libs/browser-sdk/src",
+    "browser": {
+      "root": "libs/browser",
+      "sourceRoot": "libs/browser/src",
       "projectType": "library",
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/browser-sdk/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/browser/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/browser-sdk"],
+          "outputs": [
+            "coverage/libs/browser"
+          ],
           "options": {
-            "jestConfig": "libs/browser-sdk/jest.config.js",
+            "jestConfig": "libs/browser/jest.config.ts",
             "passWithNoTests": true
+          }
+        },
+        "build": {
+          "executor": "@nrwl/js:tsc",
+          "outputs": [
+            "{options.outputPath}"
+          ],
+          "options": {
+            "runtimeChunk": false,
+            "vendorChunk": false,
+            "optimization": true,
+            "outputPath": "dist/libs/browser",
+            "tsConfig": "libs/browser/tsconfig.lib.json",
+            "packageJson": "libs/browser/package.json",
+            "main": "libs/browser/src/index.ts",
+            "assets": [
+              "libs/browser/*.md"
+            ]
           }
         }
       },
@@ -30,8 +54,10 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/web:webpack",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/webpack:webpack",
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "defaultConfiguration": "production",
           "options": {
             "compiler": "babel",
@@ -41,8 +67,13 @@
             "main": "apps/demo-ga4/src/main.tsx",
             "polyfills": "apps/demo-ga4/src/polyfills.ts",
             "tsConfig": "apps/demo-ga4/tsconfig.app.json",
-            "assets": ["apps/demo-ga4/src/favicon.ico", "apps/demo-ga4/src/assets"],
-            "styles": ["apps/demo-ga4/src/styles.css"],
+            "assets": [
+              "apps/demo-ga4/src/favicon.ico",
+              "apps/demo-ga4/src/assets"
+            ],
+            "styles": [
+              "apps/demo-ga4/src/styles.css"
+            ],
             "scripts": [],
             "webpackConfig": "@nrwl/react/plugins/webpack"
           },
@@ -60,11 +91,17 @@
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false
+            },
+            "development": {
+              "extractLicenses": false,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
             }
           }
         },
         "serve": {
-          "executor": "@nrwl/web:dev-server",
+          "executor": "@nrwl/webpack:dev-server",
           "options": {
             "buildTarget": "demo-ga4:build",
             "hmr": true
@@ -73,21 +110,32 @@
             "production": {
               "buildTarget": "demo-ga4:build:production",
               "hmr": false
+            },
+            "development": {
+              "buildTarget": "demo-ga4:build:development",
+              "port": 4219
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/demo-ga4/**/*.{ts,tsx,js,jsx}"]
+            "lintFilePatterns": [
+              "apps/demo-ga4/**/*.{ts,tsx,js,jsx}"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/demo-ga4"],
+          "outputs": [
+            "coverage/apps/demo-ga4"
+          ],
           "options": {
-            "jestConfig": "apps/demo-ga4/jest.config.js",
+            "jestConfig": "apps/demo-ga4/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -101,16 +149,22 @@
       "targets": {
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["libs/privacy-pack/**/*.ts"]
+            "lintFilePatterns": [
+              "libs/privacy-pack/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/libs/privacy-pack"],
+          "outputs": [
+            "coverage/libs/privacy-pack"
+          ],
           "options": {
-            "jestConfig": "libs/privacy-pack/jest.config.js",
+            "jestConfig": "libs/privacy-pack/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -123,13 +177,19 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/webpack:webpack",
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "outputPath": "dist/apps/server",
             "main": "apps/server/src/main.ts",
             "tsConfig": "apps/server/tsconfig.app.json",
-            "assets": ["apps/server/src/assets"]
+            "assets": [
+              "apps/server/src/assets"
+            ],
+            "target": "node",
+            "compiler": "tsc"
           },
           "configurations": {
             "production": {
@@ -146,31 +206,40 @@
           }
         },
         "serve": {
-          "executor": "@nrwl/node:execute",
+          "executor": "@nrwl/node:node",
           "options": {
             "buildTarget": "server:build",
-            "port": 0
+            "port": 4119
           }
         },
         "serveMultiple": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
-            "commands": ["PORT=4114 nx run server:serve", "PORT=4214 nx run server:serve"],
+            "commands": [
+              "PORT=4114 nx run server:serve",
+              "PORT=4214 nx run server:serve"
+            ],
             "parallel": true
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/server/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/server/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/server"],
+          "outputs": [
+            "coverage/apps/server"
+          ],
           "options": {
-            "jestConfig": "apps/server/jest.config.js",
+            "jestConfig": "apps/server/jest.config.ts",
             "passWithNoTests": true
           }
         }
@@ -183,14 +252,20 @@
       "projectType": "application",
       "targets": {
         "build": {
-          "executor": "@nrwl/node:build",
-          "outputs": ["{options.outputPath}"],
+          "executor": "@nrwl/webpack:webpack",
+          "outputs": [
+            "{options.outputPath}"
+          ],
           "options": {
             "generatePackageJson": true,
             "outputPath": "dist/apps/soaker",
             "main": "apps/soaker/src/main.ts",
             "tsConfig": "apps/soaker/tsconfig.app.json",
-            "assets": ["apps/soaker/src/assets"]
+            "assets": [
+              "apps/soaker/src/assets"
+            ],
+            "target": "node",
+            "compiler": "tsc"
           },
           "configurations": {
             "production": {
@@ -207,28 +282,36 @@
           }
         },
         "serve": {
-          "executor": "@nrwl/node:execute",
+          "executor": "@nrwl/node:node",
           "options": {
-            "buildTarget": "soaker:build"
+            "buildTarget": "soaker:build",
+            "port": 4219
           }
         },
         "lint": {
           "executor": "@nrwl/linter:eslint",
-          "outputs": ["{options.outputFile}"],
+          "outputs": [
+            "{options.outputFile}"
+          ],
           "options": {
-            "lintFilePatterns": ["apps/soaker/**/*.ts"]
+            "lintFilePatterns": [
+              "apps/soaker/**/*.ts"
+            ]
           }
         },
         "test": {
           "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/apps/soaker"],
+          "outputs": [
+            "coverage/apps/soaker"
+          ],
           "options": {
-            "jestConfig": "apps/soaker/jest.config.js",
+            "jestConfig": "apps/soaker/jest.config.ts",
             "passWithNoTests": true
           }
         }
       },
       "tags": []
     }
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

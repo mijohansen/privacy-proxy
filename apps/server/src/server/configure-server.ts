@@ -24,18 +24,15 @@ export const configureServer = (app: Express) => {
   );
   app.use((req, res, next) => {
     // check if client sent cookie
-    const cookie = req.cookies[COOKIE_NAME];
-    if (cookie === undefined && req.method !== 'OPTIONS') {
-      res.cookie(COOKIE_NAME, generateTrackingUuid(), {
-        maxAge: 900000,
+    const cookie = req.cookies[COOKIE_NAME] ?? generateTrackingUuid();
+    if (req.method !== 'OPTIONS') {
+      res.cookie(COOKIE_NAME, cookie, {
+        maxAge: 10 * 365 * 24 * 60 * 60,
         httpOnly: true,
         sameSite: 'none',
         secure: true,
       });
-      console.log('cookie created successfully', req.method, req.url);
-    } else {
-      console.log('cookie exists', cookie);
     }
-    next(); // <-- important!
+    next();
   });
 };
